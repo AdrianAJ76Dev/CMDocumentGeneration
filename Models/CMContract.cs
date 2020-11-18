@@ -268,7 +268,6 @@ namespace CMDocumentGeneration.Models
 
             //  Add the custom xml or "Do the Merge"
             
-            int customXMLIndex=1;
             string linkID;
             cc=new contentControl(fileName);
             
@@ -277,21 +276,22 @@ namespace CMDocumentGeneration.Models
             xmlMainContract.SerializeDataToXml(cmNewContract.Agreement);
             xmlMainContract.InsertCustomXmlData(xmlMainContract.FileName,xmlMainContract.XMLNS,fileName,out linkID);
             
-            cc.BindContentControls(xmlMainContract.FileName, fileName, xmlMainContract.XMLNS, xmlMainContract.XMLElementName, linkID, customXMLIndex);
+            cc.BindContentControls(xmlMainContract.FileName, fileName, xmlMainContract.XMLNS, xmlMainContract.XMLElementName, linkID);
 
             xmlPrimaryContact.FileName="CM-Contract-"+xmlPrimaryContact.XMLElementName.ToUpper()+"-";
             xmlPrimaryContact.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlPrimaryContact.SerializeDataToXml(cmNewContract.PrimaryContact);
             xmlPrimaryContact.InsertCustomXmlData(xmlPrimaryContact.FileName,xmlPrimaryContact.XMLNS,fileName,out linkID);
 
-            cc.BindContentControls(xmlPrimaryContact.FileName,fileName,xmlPrimaryContact.XMLNS, xmlPrimaryContact.XMLElementName, linkID, customXMLIndex);
+            cc.BindContentControls(xmlPrimaryContact.FileName,fileName,xmlPrimaryContact.XMLNS, xmlPrimaryContact.XMLElementName, linkID);
 
             xmlAgreementQuote.FileName="CM-Contract-"+xmlAgreementQuote.XMLElementName.ToUpper()+"-";
             xmlAgreementQuote.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlAgreementQuote.SerializeDataToXml(cmNewContract.AgreementQuote);
             xmlAgreementQuote.InsertCustomXmlData(xmlAgreementQuote.FileName,xmlAgreementQuote.XMLNS,fileName,out linkID);
 
-            cc.BindContentControls(xmlAgreementQuote.FileName,fileName,xmlAgreementQuote.XMLNS, xmlAgreementQuote.XMLElementName, linkID, customXMLIndex);
+            
+            cc.BindContentControls(xmlAgreementQuote.FileName,fileName,xmlAgreementQuote.XMLNS, xmlAgreementQuote.XMLElementName, linkID);
         }
     }
 }
