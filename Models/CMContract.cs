@@ -289,10 +289,6 @@ namespace CMDocumentGeneration.Models
 
             cc.BindContentControls(xmlPrimaryContact.FileName, fileName, xmlPrimaryContact.XMLNS, xmlPrimaryContact.XMLElementName, linkID, QuoteLineItemsCount);
 
-
-
-
-
             xmlAgreementQuote.FileName="CM-Contract-"+xmlAgreementQuote.XMLElementName.ToUpper()+"-";
             xmlAgreementQuote.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlAgreementQuote.SerializeDataToXml(cmNewContract.AgreementQuote);
