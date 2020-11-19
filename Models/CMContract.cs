@@ -191,14 +191,6 @@ namespace CMDocumentGeneration.Models
                     break;
             }
             
-            fileName="CM-Contract-"
-                +PrimaryContact.FirstName+"-"
-                +PrimaryContact.LastName+"-"
-                +Agreement.ContractNumber
-                +".docx"; // Name of Word document
-
-            CreateWordDocument(templateName,fileName);
-
             // Choose the rider
             MemoryStream msAutoTextNamesJSON = AzureResources.GetJSONFile("AutoText.JSON");
             ReadOnlySpan<byte> jsonReadOnlySpan = msAutoTextNamesJSON.ToArray();
@@ -206,6 +198,7 @@ namespace CMDocumentGeneration.Models
             msAutoTextNamesJSON.Close();
 
             List<autoTextSettings> AutoTextFound = new List<autoTextSettings>();
+            string productsInFileName = string.Empty;
             foreach (var currRider in AgreementRiders)
             {
                 foreach (var autoTextName in SFProductTranslateToRider)
@@ -213,9 +206,20 @@ namespace CMDocumentGeneration.Models
                     if (currRider.ProductName.Contains(autoTextName.Product))
                     {
                         AutoTextFound.Add(autoTextName);
+                        productsInFileName+=autoTextName.AutoTextName;
+                        productsInFileName+="-";
                     }
                 }
             }
+
+            fileName="CM-Contract-"
+                +PrimaryContact.FirstName+"-"
+                +PrimaryContact.LastName+"-"
+                +productsInFileName
+                +Agreement.ContractNumber
+                +".docx"; // Name of Word document
+
+            CreateWordDocument(templateName,fileName);
 
             OpenXmlElement AutoText;
             //  11.06.2020 Open the generated Word document once and insert all that needs to be inserted!
@@ -265,7 +269,7 @@ namespace CMDocumentGeneration.Models
             //  Put in the quote           
             OpenXmlElement qAutoText=AgreementQuote.RetrieveAutoText(templateName,AgreementQuote.AutoTextQuoteName);
             AgreementQuote.InsertAutoText(fileName,qAutoText);
-
+            int QuoteLineItemsCount=AgreementQuote.LineItems.Count;
             //  Add the custom xml or "Do the Merge"
             
             string linkID;
@@ -274,24 +278,27 @@ namespace CMDocumentGeneration.Models
             xmlMainContract.FileName="CM-Contract-"+xmlMainContract.XMLElementName.ToUpper()+"-";
             xmlMainContract.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlMainContract.SerializeDataToXml(cmNewContract.Agreement);
-            xmlMainContract.InsertCustomXmlData(xmlMainContract.FileName,xmlMainContract.XMLNS,fileName,out linkID);
+            xmlMainContract.InsertCustomXmlData(xmlMainContract.FileName, xmlMainContract.XMLNS, fileName, out linkID);
             
-            cc.BindContentControls(xmlMainContract.FileName, fileName, xmlMainContract.XMLNS, xmlMainContract.XMLElementName, linkID);
+            cc.BindContentControls(xmlMainContract.FileName, fileName, xmlMainContract.XMLNS, xmlMainContract.XMLElementName, linkID, QuoteLineItemsCount);
 
             xmlPrimaryContact.FileName="CM-Contract-"+xmlPrimaryContact.XMLElementName.ToUpper()+"-";
             xmlPrimaryContact.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlPrimaryContact.SerializeDataToXml(cmNewContract.PrimaryContact);
-            xmlPrimaryContact.InsertCustomXmlData(xmlPrimaryContact.FileName,xmlPrimaryContact.XMLNS,fileName,out linkID);
+            xmlPrimaryContact.InsertCustomXmlData(xmlPrimaryContact.FileName, xmlPrimaryContact.XMLNS, fileName, out linkID);
 
-            cc.BindContentControls(xmlPrimaryContact.FileName,fileName,xmlPrimaryContact.XMLNS, xmlPrimaryContact.XMLElementName, linkID);
+            cc.BindContentControls(xmlPrimaryContact.FileName, fileName, xmlPrimaryContact.XMLNS, xmlPrimaryContact.XMLElementName, linkID, QuoteLineItemsCount);
+
+
+
+
 
             xmlAgreementQuote.FileName="CM-Contract-"+xmlAgreementQuote.XMLElementName.ToUpper()+"-";
             xmlAgreementQuote.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlAgreementQuote.SerializeDataToXml(cmNewContract.AgreementQuote);
-            xmlAgreementQuote.InsertCustomXmlData(xmlAgreementQuote.FileName,xmlAgreementQuote.XMLNS,fileName,out linkID);
-
-            
-            cc.BindContentControls(xmlAgreementQuote.FileName,fileName,xmlAgreementQuote.XMLNS, xmlAgreementQuote.XMLElementName, linkID);
+            xmlAgreementQuote.InsertCustomXmlData(xmlAgreementQuote.FileName, xmlAgreementQuote.XMLNS, fileName, out linkID);
+           
+            cc.BindContentControls(xmlAgreementQuote.FileName, fileName, xmlAgreementQuote.XMLNS, xmlAgreementQuote.XMLElementName, linkID, QuoteLineItemsCount);
         }
     }
 }

@@ -216,7 +216,7 @@ namespace CMDocumentGeneration.Models
             *   This should be the LAST piece of the process
             *   The document is complete when the content controls are linked
             */
-            public void BindContentControls(string xmlfilename, string wrdFileName, string ns, string prefix, string datastoreID){
+            public void BindContentControls(string xmlfilename, string wrdFileName, string ns, string prefix, string datastoreID, int QuoteLineItems){
                 /*  Content Controls */
                 List<SdtElement> ccAll;                   
 
@@ -253,61 +253,37 @@ namespace CMDocumentGeneration.Models
                     *   IF we're looking at QUOTE Content Controls
                     *   there may be levels and a repeating Content Control
                     */
-                    int lineItemIndex=0;
+                    //  11.18.2020 Doing the Quote/Budget Schedule
                     if (prefix=="agrmt-q")
                     {
                         /*  11.13.2020
                         *   Get the content Control containing the repeating rows
                         */
                         //  11.17.2020 Get number of items in quote and cycle through
-
                         IEnumerable<SdtElement> ccLineItemsContainer =
                             from cc in ccAll
                             where cc.Descendants<SdtAlias>().FirstOrDefault<SdtAlias>()
                                     .Val.Value.Contains("LineItem")
                             select cc;
                         
-                        ccLineItemsContainer.FirstOrDefault<SdtElement>()
-                            .Descendants<SdtProperties>().FirstOrDefault<SdtProperties>()
-                            .Descendants<Tag>().FirstOrDefault<Tag>()
-                            .Val.Value=
-                        ccLineItemsContainer.FirstOrDefault<SdtElement>()
-                            .Descendants<SdtProperties>().FirstOrDefault<SdtProperties>()
-                            .Descendants<Tag>().FirstOrDefault<Tag>()
-                            .Val.Value.Replace(prefix,prefix+"[1]");
+                        DoBinding(ccLineItemsContainer, datastoreID, ns, prefix, QuoteLineItems);
 
-                        
-                        ccLineItemsContainer.FirstOrDefault<SdtElement>()
-                            .Descendants<SdtProperties>().FirstOrDefault<SdtProperties>()
-                            .Descendants<Tag>().FirstOrDefault<Tag>()
-                            .Val.Value=
-                        ccLineItemsContainer.FirstOrDefault<SdtElement>()
-                            .Descendants<SdtProperties>().FirstOrDefault<SdtProperties>()
-                            .Descendants<Tag>().FirstOrDefault<Tag>()
-                            .Val.Value.Replace("LineItems","LineItems[1]");                            
-                        newDocument.Save();
-
-                        DoBinding(ccLineItemsContainer, datastoreID, ns, prefix, lineItemIndex);
-                        newDocument.Save();
-
+                        //  11.18.2020 Select all the content controls in that repeating row
                         IEnumerable<SdtElement> ccRepeatingRowValues =
                             from cc in ccAll
                             where cc.Descendants<Tag>().FirstOrDefault<Tag>()
-                                    .Val.Value.Contains("LineItem/")
+                                    .Val.Value.Contains("LineItem/ns:")
                             select cc;
 
-                        foreach (SdtElement item in ccRepeatingRowValues)
-                        {
-                            lineItemIndex++;
-                        }
-                        DoBinding(ccRepeatingRowValues, datastoreID, ns, prefix, lineItemIndex);
+                        DoBinding(ccRepeatingRowValues, datastoreID, ns, prefix, QuoteLineItems);
                     }                        
                     else
-                        DoBinding(ccCurrSet, datastoreID, ns, prefix, lineItemIndex);
+                        DoBinding(ccCurrSet, datastoreID, ns, prefix, QuoteLineItems);
                     
                    newDocument.Save();
                    newDocument.Close();
                 }
+
                 AzureResources.SaveGeneratedDocument(generatedDocument, wrdFileName); 
                 generatedDocument.Close();
            }
@@ -321,28 +297,41 @@ namespace CMDocumentGeneration.Models
                 /*  11.12.2020
                 *   Constants for XPath
                 */
+                int customXmlElementCount=1;
                 foreach (SdtElement wrdCC in specificContentControls)
                 {
                     ccProps=wrdCC.GetFirstChild<SdtProperties>();
-                    ccName=wrdCC.Descendants<SdtAlias>().FirstOrDefault<SdtAlias>();    //  Get the name object of the content control
-                    ccTag=wrdCC.Descendants<Tag>().FirstOrDefault<Tag>();               //  11.5.2020 XPath query for databinding stored here 
-                                                                                                            
-                    ccDataBinding = new DataBinding();
-                    ccDataBinding.PrefixMappings=string.Format("xmlns:ns='{0}'", ns);
-                    //ccDataBinding.PrefixMappings="xmlns:ns="+"'"+ ns +"'";              //  "xmlns:ns0='http//www.collegeboard.org/sdp/contractsmanagement/Agreement' "                    
-                    ccDataBinding.XPath="//ns:"+prefix+"/ns:"+ccName.Val.Value;         
-                    if (lineItemIndex > 0 && prefix=="agrmt-q")
+                    ccName=ccProps.GetFirstChild<SdtAlias>();
+                    if (ccName != null)                                                     // If the name is null, the element isn't a content control
                     {
-                        //  "//ns:agrmt-q/ns:LineItems/ns:LineItem/ns:Quantity[1]"
-                        ccDataBinding.XPath=string.Format("//ns:{0}[1]/ns:LineItems[1]/ns:LineItem[{2}]/{1}[{2}]", prefix, ccName.Val.Value, lineItemIndex);
+                        ccTag=wrdCC.Descendants<Tag>().FirstOrDefault<Tag>();               //  11.5.2020 XPath query for databinding stored here 
+                                                                                                                
+                        ccDataBinding = new DataBinding();
+                        ccDataBinding.PrefixMappings=string.Format("xmlns:ns='{0}'", ns);
+
+                        //  11.18.2020 Am I working with the Quote Container Content Control
+                        if (prefix=="agrmt-q")
+                        {
+                            ccDataBinding.PrefixMappings=string.Format("xmlns:ns0='{0}'", ns);
+                            if (ccName.Val.Value=="LineItems")
+                            {
+                                //  "//ns:agrmt-q[1]/ns:LineItems[1]/ns:LineItem" />"
+                                ccDataBinding.XPath=string.Format("//ns0:{0}[1]/ns0:LineItems[1]/ns0:LineItem", prefix);
+                            }
+                            else
+                            {
+                                //  "//ns:agrmt-q/ns:LineItems/ns:LineItem/ns:ProductName[1]"
+                                ccDataBinding.XPath=string.Format("//ns0:{0}[1]/ns0:LineItems[1]/ns0:LineItem[{2}]/ns0:{1}[{2}]", prefix, ccName.Val.Value, customXmlElementCount);
+                            }
+                        }
+                        else
+                        {
+                            //  "//ns0:agrmt-m[1]/ns0:ContractNumber[1]" 11.13.2020
+                            ccDataBinding.XPath=string.Format("//ns:{0}/ns:{1}[1]", prefix, ccName.Val.Value);
+                        }
+                        ccDataBinding.StoreItemId=datastoreID;                              //  "{E45CD94D-6275-426C-A007-762425B85F33}"
+                        ccProps.Append(ccDataBinding);                       
                     }
-                    else
-                    {
-                        //  "//ns0:agrmt-m[1]/ns0:ContractNumber[1]" 11.13.2020
-                        ccDataBinding.XPath=string.Format("//ns:{0}/ns:{1}",prefix,ccName.Val.Value);
-                    }
-                    ccDataBinding.StoreItemId=datastoreID;                              //  "{E45CD94D-6275-426C-A007-762425B85F33}"
-                    ccProps.AppendChild<DataBinding>(ccDataBinding);
                 }
             }
         }
