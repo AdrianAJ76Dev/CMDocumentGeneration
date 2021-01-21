@@ -94,6 +94,7 @@ namespace CMDocumentGeneration.Models
 
         }
         
+        // 1.21.2021 Classes that describe SB Quote JSON
         public class LineItem
         {
             public string ProductName{get;set;}
