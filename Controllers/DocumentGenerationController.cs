@@ -30,7 +30,6 @@ namespace CMDocumentGeneration.Controllers
         public void ComplexQuote([FromBody] CMContract.SBComplexQuote cmQuote){
             cmQuote.AddProcessedQuote();
         }
-
     }
 
 }
