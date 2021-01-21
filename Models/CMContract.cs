@@ -401,11 +401,6 @@ namespace CMDocumentGeneration.Models
             xmlAgreementQuote.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlAgreementQuote.SerializeDataToXml(cmNewContract.AgreementQuote);
             xmlAgreementQuote.InsertCustomXmlData(xmlAgreementQuote.FileName, xmlAgreementQuote.XMLNS, fileName, out linkID);
-            /* if (AgreementQuote.LineItems == null)
-            {
-               xmlAgreementQuote.xpathContentControlName="DistrictCostItems";
-            }
-            */
             cc.BindContentControls(xmlAgreementQuote.FileName, fileName, xmlAgreementQuote.XMLNS, xmlAgreementQuote.XMLElementName, linkID, xmlAgreementQuote.xpathContentControlName);
         }
     }
