@@ -3,6 +3,7 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Reflection;
 
 // Xml libraries
 using System.Linq;
@@ -35,7 +36,7 @@ namespace CMDocumentGeneration.Models
         */
         public enum ContractType{agreement, amendment};
         /*  The product type becomes part of the name */
-        public enum productType:Int16 {
+        public enum productType:byte {
             SpringBoard=0, 
             PreAP=1, 
             EnrollmentPlanningServiceUnlimited=2, 
@@ -47,9 +48,10 @@ namespace CMDocumentGeneration.Models
             NetPartnerInitial=8,
             NetPartnerSupport=9,
             Profile=10,
-            InterestInMyCollege=11
+            InterestInMyCollege=11,
+            None=99
         };
-        public enum instType:Int16
+        public enum instType:byte
         {
             K12=0,
             HED=1
@@ -62,7 +64,7 @@ namespace CMDocumentGeneration.Models
             public string CreateDate{get;set;}
             public string ContractStartDate{get;set;}
             public string ContractEndDate{get;set;}
-            public string Term{get;set;}
+            public int Term{get;set;}
             public string ImplementationYears{get;set;}
             public string ClientSignatory{get;set;}
             public string ClientTitle{get;set;}
@@ -76,8 +78,20 @@ namespace CMDocumentGeneration.Models
             public string AutoTextName{get;set;}
         }
         public class Quote : autoText{
-            public string AutoTextQuoteName{get;set;}
             public List<LineItem> LineItems{get;set;}
+        }
+
+        public class SBComplexQuote{
+            public List<SummaryItem> Summary{get;set;}
+            public List<PaymentScheduleItem> PaymentSchedule{get;set;}
+            public List<DistrictCostItem> DistrictCostItems{get;set;}
+            public List<DistrictSavingsItem> DistrictSavings{get;set;}
+            public void AddProcessedQuote(){
+            /* 1.20.2021
+            * 
+            */
+        }
+
         }
         
         public class LineItem
@@ -85,14 +99,65 @@ namespace CMDocumentGeneration.Models
             public string ProductName{get;set;}
             public string StartDate{get;set;}
             public string EndDate{get;set;}
-            public string Quantity{get;set;}
-            public string TotalCost{get;set;}
+            public int Quantity{get;set;}
+            public float TotalCost{get;set;}
         }
+        public class SummaryItem
+        {
+            public string TypeOfCost{get;set;}
+            public float Fees{get;set;}
+            public float CostSavings{get;set;}
+            public float DistrictCost{get;set;}
+        }
+        public class PaymentScheduleItem
+        {
+            public int YearNo{get;set;}
+            public string Year{get;set;}
+            public float Total{get;set;}
+        }       
+        public class DistrictCostItem
+        {
+            public string Product{get;set;}
+            public int Quantity{get;set;}
+            public float UnitPrice{get;set;}
+            public float TotalDiscountAmount{get;set;}
+            public float TotalPrice{get;set;}
+        }
+        public class DistrictSavingsItem
+        {
+            public string Product{get;set;}
+            public int Quantity{get;set;}
+            public float UnitPrice{get;set;}
+            public float TotalDiscountAmount{get;set;}
+            public float TotalPrice{get;set;}
+        }
+
+        // This is an idea of what's basically in all quotes. This is the data that is in every quote from Salesforce
+        public class SFQuote
+        {
+            public float subTotal{get;set;}
+            public float discount{get;set;}
+            public float shippingHandling{get;set;}
+            public float grandTotal{get;set;}
+            public string product{get;set;}
+            public int quantity{get;set;}
+            public DateTime startDate{get;set;}
+            public DateTime endDate{get;set;}
+            public float catalogUnitPrice{get;set;}
+            public float unitPriceAdjustment{get;set;}
+            public float unitPrice{get;set;}
+            public float totalDiscountAmount{get;set;}
+            public float totalDiscountPercentage{get;set;}
+            public float totalPrice{get;set;}
+        }
+
+        
         public class autoTextSettings{
             // reads set values in a table to determine what is AutoText and what is custom XmL
             public productType contractRiderID{get;set;}
-            public string AutoTextName{get;set;}
             public string Product{get;set;}
+            public string AutoTextRider{get;set;}
+            public string AutoTextQuote{get;set;}
         }
 
         private class XmlMainContract : customXML{
@@ -128,18 +193,23 @@ namespace CMDocumentGeneration.Models
                 xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement/Rider";
             }
         }
+        // 1.19.2021 --- SERIOUSLY consider if this can be added as another class Quote inherits from!
         private class XmlQuote : customXML{
             public XmlQuote(){
                xmlElementName="agrmt-q";
                xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement/Quote";
             }
 
+            public string xpathContentControlName{get;set;}
+
             public void SerializeDataToXml(Quote AgreementQuote){
                 attXmlRoot.ElementName=xmlElementName;
                 attXmlRoot.Namespace=xmlNamespace;
+
                 attXmlAttributes.XmlRoot=attXmlRoot;
                 attXmlAttributeOverrides.Add(typeof(Quote), attXmlAttributes);
                 CustomNamespaces.Add(xmlElementName, xmlNamespace);
+
                 MemoryStream ms = new MemoryStream();
                 XmlSerializer XmlDoc = new XmlSerializer(typeof(Quote), attXmlAttributeOverrides);
                 XmlDoc.Serialize(ms, AgreementQuote, CustomNamespaces);            
@@ -166,6 +236,8 @@ namespace CMDocumentGeneration.Models
         public List<Rider> AgreementRiders{get;set;} 
         public List<autoTextSettings> SFProductTranslateToRider{get;set;}
         public Quote AgreementQuote{get;set;}
+
+        public SBComplexQuote MultiYearSBQuote{get;set;}
         
         public void Generate(CMContract cmNewContract)
         {
@@ -183,11 +255,11 @@ namespace CMDocumentGeneration.Models
             switch (Agreement.InstitutionType)
             {
                 case instType.K12:
-                    templateName="K12 Template.dotx";            
+                    templateName="K12-Template.dotx";            
                     break;
                 case instType.HED:
                     //templateName="HED Template v2.dotx"; // Without content control in the autotext
-                    templateName="HED Template.dotx"; // With content control in the autotext
+                    templateName="HED-Template.dotx"; // With content control in the autotext
                     break;
             }
             
@@ -206,7 +278,7 @@ namespace CMDocumentGeneration.Models
                     if (currRider.ProductName.Contains(autoTextName.Product))
                     {
                         AutoTextFound.Add(autoTextName);
-                        productsInFileName+=autoTextName.AutoTextName;
+                        productsInFileName+=autoTextName.AutoTextRider;
                         productsInFileName+="-";
                     }
                 }
@@ -222,6 +294,9 @@ namespace CMDocumentGeneration.Models
             CreateWordDocument(templateName,fileName);
 
             OpenXmlElement AutoText;
+            int quoteAutoTextIndex=0;
+            productType chosenRider=productType.EnrollmentPlanningServiceUnlimited;
+
             //  11.06.2020 Open the generated Word document once and insert all that needs to be inserted!
             // 11.06.2020 Insert Riders by name sent from Salesforce using product names
             foreach (var currRider in AutoTextFound)
@@ -230,71 +305,108 @@ namespace CMDocumentGeneration.Models
                 {
                     case productType.SpringBoard:
                         Rider SpringBoard = new Rider();
-                        AutoText = SpringBoard.RetrieveAutoText(templateName,currRider.AutoTextName);
+                        AutoText = SpringBoard.RetrieveAutoText(templateName,currRider.AutoTextRider);
                         SpringBoard.InsertAutoText(fileName,AutoText);
+                        quoteAutoTextIndex=(int)productType.SpringBoard;
+                        chosenRider = productType.SpringBoard;
                         break;
 
-                        case productType.PreAP:
-                            Rider PreAP = new Rider();
-                            AutoText = PreAP.RetrieveAutoText(templateName,currRider.AutoTextName);
-                            PreAP.InsertAutoText(fileName,AutoText);
-                            break;
+                    case productType.PreAP:
+                        Rider PreAP = new Rider();
+                        AutoText = PreAP.RetrieveAutoText(templateName,currRider.AutoTextRider);
+                        PreAP.InsertAutoText(fileName,AutoText);
+                        quoteAutoTextIndex=(int)productType.PreAP;
+                        chosenRider=productType.PreAP;
+                        break;
 
-                        case productType.EnrollmentPlanningServiceUnlimited:
-                            Rider EPSUnlimited = new Rider();
-                            AutoText = EPSUnlimited.RetrieveAutoText(templateName,currRider.AutoTextName);
-                            EPSUnlimited.InsertAutoText(fileName, AutoText);
-                            break;
+                    case productType.EnrollmentPlanningServiceUnlimited:
+                        Rider EPSUnlimited = new Rider();
+                        AutoText = EPSUnlimited.RetrieveAutoText(templateName,currRider.AutoTextRider);
+                        EPSUnlimited.InsertAutoText(fileName, AutoText);
+                        quoteAutoTextIndex=(int)productType.EnrollmentPlanningServiceUnlimited;
+                        chosenRider=productType.EnrollmentPlanningServiceUnlimited;
+                        break;
 
-                        case productType.StudentSearchService:
-                            Rider SSSUnlimited = new Rider();
-                            AutoText = SSSUnlimited.RetrieveAutoText(templateName,currRider.AutoTextName);
-                            SSSUnlimited.InsertAutoText(fileName, AutoText);
-                            break;
+                    case productType.StudentSearchService:
+                        Rider SSSUnlimited = new Rider();
+                        AutoText = SSSUnlimited.RetrieveAutoText(templateName,currRider.AutoTextRider);
+                        SSSUnlimited.InsertAutoText(fileName, AutoText);
+                        quoteAutoTextIndex=(int)productType.StudentSearchService;
+                        chosenRider=productType.StudentSearchService;
+                        break;
 
-                        case productType.SegmentAnalysisService:
-                            Rider SASUnlimited = new Rider();
-                            AutoText = SASUnlimited.RetrieveAutoText(templateName,currRider.AutoTextName);
-                            SASUnlimited.InsertAutoText(fileName,AutoText);
-                            break;
+                    case productType.SegmentAnalysisService:
+                        Rider SASUnlimited = new Rider();
+                        AutoText = SASUnlimited.RetrieveAutoText(templateName,currRider.AutoTextRider);
+                        SASUnlimited.InsertAutoText(fileName,AutoText);
+                        quoteAutoTextIndex=(int)productType.SegmentAnalysisService;
+                        chosenRider=productType.SegmentAnalysisService;
+                        break;
 
-                        case productType.PowerFAIDSInitial:
-                            break;
+                    case productType.PowerFAIDSInitial:
+                        quoteAutoTextIndex=(int)productType.PowerFAIDSInitial;
+                        chosenRider=productType.PowerFAIDSInitial;
+                        break;
 
-                        case productType.Profile:
-                            break;
+                    case productType.Profile:
+                        quoteAutoTextIndex=(int)productType.Profile;
+                        chosenRider=productType.Profile;
+                        break;
+
+                    default:
+                        chosenRider=productType.None;
+                        break;
                 }
             }
 
-            //  Put in the quote           
-            OpenXmlElement qAutoText=AgreementQuote.RetrieveAutoText(templateName,AgreementQuote.AutoTextQuoteName);
-            AgreementQuote.InsertAutoText(fileName,qAutoText);
-            int QuoteLineItemsCount=AgreementQuote.LineItems.Count;
             //  Add the custom xml or "Do the Merge"
             
             string linkID;
             cc=new contentControl(fileName);
+
+            /* 1.20.2021 This can be removed because processing happens in the new quote object: SBComplexQuote/Instance: MultiYearSBQuote
+            * but for now LEAVE this in until I am able to create a web api from python, pandas and flask!
+            */
+            xmlAgreementQuote.xpathContentControlName="LineItems";
             
             xmlMainContract.FileName="CM-Contract-"+xmlMainContract.XMLElementName.ToUpper()+"-";
             xmlMainContract.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlMainContract.SerializeDataToXml(cmNewContract.Agreement);
             xmlMainContract.InsertCustomXmlData(xmlMainContract.FileName, xmlMainContract.XMLNS, fileName, out linkID);
             
-            cc.BindContentControls(xmlMainContract.FileName, fileName, xmlMainContract.XMLNS, xmlMainContract.XMLElementName, linkID, QuoteLineItemsCount);
+            cc.BindContentControls(xmlMainContract.FileName, fileName, xmlMainContract.XMLNS, xmlMainContract.XMLElementName, linkID, xmlAgreementQuote.xpathContentControlName);
 
             xmlPrimaryContact.FileName="CM-Contract-"+xmlPrimaryContact.XMLElementName.ToUpper()+"-";
             xmlPrimaryContact.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlPrimaryContact.SerializeDataToXml(cmNewContract.PrimaryContact);
             xmlPrimaryContact.InsertCustomXmlData(xmlPrimaryContact.FileName, xmlPrimaryContact.XMLNS, fileName, out linkID);
 
-            cc.BindContentControls(xmlPrimaryContact.FileName, fileName, xmlPrimaryContact.XMLNS, xmlPrimaryContact.XMLElementName, linkID, QuoteLineItemsCount);
+            cc.BindContentControls(xmlPrimaryContact.FileName, fileName, xmlPrimaryContact.XMLNS, xmlPrimaryContact.XMLElementName, linkID, xmlAgreementQuote.xpathContentControlName);
 
+
+            //  Put in the quote           
+            OpenXmlElement qAutoText=AgreementQuote.RetrieveAutoText(templateName,SFProductTranslateToRider[quoteAutoTextIndex].AutoTextQuote); // 12.09.2020 Need to think about a better way of doing this because there's one autotext entry for the quote that's the same no matter how many riders there are.
+            AgreementQuote.InsertAutoText(fileName,qAutoText);
+
+
+
+            // 1.20.2021 Determine whether to create a STANDARD QUOTE or a MULTI-YEAR SPRINGBOARD QUOTE
+            if (chosenRider == productType.SpringBoard && Agreement.Term > 1)
+            {
+                /* 1.20.2010 send JSON Quote from Salesforce to Python/Pandas restful web api */
+            }
+
+            // 1.19.2021 Should this be in the quote object? Should the quote inherit both AutoText AND CustomXml? Think about it.
             xmlAgreementQuote.FileName="CM-Contract-"+xmlAgreementQuote.XMLElementName.ToUpper()+"-";
             xmlAgreementQuote.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlAgreementQuote.SerializeDataToXml(cmNewContract.AgreementQuote);
             xmlAgreementQuote.InsertCustomXmlData(xmlAgreementQuote.FileName, xmlAgreementQuote.XMLNS, fileName, out linkID);
-           
-            cc.BindContentControls(xmlAgreementQuote.FileName, fileName, xmlAgreementQuote.XMLNS, xmlAgreementQuote.XMLElementName, linkID, QuoteLineItemsCount);
+            /* if (AgreementQuote.LineItems == null)
+            {
+               xmlAgreementQuote.xpathContentControlName="DistrictCostItems";
+            }
+            */
+            cc.BindContentControls(xmlAgreementQuote.FileName, fileName, xmlAgreementQuote.XMLNS, xmlAgreementQuote.XMLElementName, linkID, xmlAgreementQuote.xpathContentControlName);
         }
     }
 }

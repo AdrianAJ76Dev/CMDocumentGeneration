@@ -26,6 +26,11 @@ namespace CMDocumentGeneration.Controllers
             // Return a Word document
             //return new FileStreamResult(AzureResources.GetGeneratedDocument(cmContract.FileName),"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         }
+        [HttpPost("Agreement\\SpringBoard\\Quote")]
+        public void ComplexQuote([FromBody] CMContract.SBComplexQuote cmQuote){
+            cmQuote.AddProcessedQuote();
+        }
+
     }
 
 }

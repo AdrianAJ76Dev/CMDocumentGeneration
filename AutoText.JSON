@@ -2,38 +2,68 @@
 [
     {"contractRiderID":0,
     "Product":"SpringBoard",
-    "AutoTextName":"SPB"},
+    "AutoTextRider":"SPB",
+    "AutoTextQuote":"SPBS"
+    },
     {"contractRiderID":1,
     "Product":"Pre-AP Services",
-    "AutoTextName":"PAP"},
+    "AutoTextRider":"PAP",
+    "AutoTextQuote":"HEDBS"
+    },
     {"contractRiderID":2,
     "Product":"Enrollment Planning",
-    "AutoTextName":"EPSU"},
+    "AutoTextRider":"EPSU",
+    "AutoTextQuote":"HEDBS"
+    },    
     {"contractRiderID":3,
     "Product":"Student Search Service",
-    "AutoTextName":"SSS"},
+    "AutoTextRider":"SSS",
+    "AutoTextQuote":"HEDBS"
+    },
     {"contractRiderID":4,
     "Product":"Segment Analysis",
-    "AutoTextName":"SASU"},
+    "AutoTextRider":"SASU",
+    "AutoTextQuote":"HEDBS"
+    },
     {"contractRiderID":5,
     "Product":"PowerFAIDS Initial",
-    "AutoTextName":"PFI"},
+    "AutoTextRider":"PFI",
+    "AutoTextQuote":"HEDBS"
+    },
     {"contractRiderID":6,
     "Product":"PowerFAIDS Updgrade",
-    "AutoTextName":"PFU"},
+    "AutoTextRider":"PFU",
+    "AutoTextQuote":"HEDBS"
+    },
     {"contractRiderID":7,
     "Product":"PowerFAIDS Maintenance",
-    "AutoTextName":"PFM"},
+    "AutoTextRider":"PFM",
+    "AutoTextQuote":"HEDBS"
+    },
     {"contractRiderID":8,
     "Product":"NetPartner Initial",
-    "AutoTextName":"NPI"},
+    "AutoTextRider":"NPI",
+    "AutoTextQuote":"HEDBS"
+    },
     {"contractRiderID":9,
     "Product":"NetPartner Support",
-    "AutoTextName":"NPS"},
+    "AutoTextRider":"NPS",
+    "AutoTextQuote":"HEDBS"
+    },
     {"contractRiderID":10,
     "Product":"Profile",
-    "AutoTextName":"PRF"},
+    "AutoTextRider":"PRF",
+    "AutoTextQuote":"HEDBS"
+    },
     {"contractRiderID":11,
     "Product":"Interest In My College",
-    "AutoTextName":"IMC"}
+    "AutoTextRider":"IMC",
+    "AutoTextQuote":"HEDBS"
+    },
+    {"contractRiderID":99,
+        "Product":"None",
+        "AutoTextRider":"None",
+        "AutoTextQuote":"None"
+    }
+    
 ] 
