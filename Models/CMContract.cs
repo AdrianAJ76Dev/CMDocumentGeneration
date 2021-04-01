@@ -225,15 +225,34 @@ namespace CMDocumentGeneration.Models
                xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement/Contact/Primary";
             }
         }
+
+        private class XmlInvoiceBilling : customXML{
+            public XmlInvoiceBilling(){
+               xmlElementName="agrmt-ibc";
+               xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement/Contact/InvoiceBilling";
+            }
+        }
+
+        private class XmlTechnicalSupport : customXML{
+            public XmlTechnicalSupport(){
+               xmlElementName="agrmt-ts";
+               xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement/Contact/TechnicalSupport";
+            }
+        }
+
         
         private contentControl cc;
         private XmlMainContract xmlMainContract = new XmlMainContract();
         private XmlPrimaryContact xmlPrimaryContact = new XmlPrimaryContact();
+        private XmlInvoiceBilling xmlInvoiceBilling = new XmlInvoiceBilling();
+        private XmlTechnicalSupport xmlTechnicalSupport = new XmlTechnicalSupport();
         private XmlQuote xmlAgreementQuote = new XmlQuote();
 
         /*  IF using nested classes MUST use AUTOMATIC PROPERTIES to make them work with Model Binding!!! */
         public MainContract Agreement{get;set;}
         public ClientInfo PrimaryContact{get;set;}
+        public ClientInfo InvoiceBilling{get;set;}
+        public ClientInfo TechnicalSupport{get;set;}
         public List<Rider> AgreementRiders{get;set;} 
         public List<autoTextSettings> SFProductTranslateToRider{get;set;}
         public Quote AgreementQuote{get;set;}
@@ -377,19 +396,33 @@ namespace CMDocumentGeneration.Models
             
             cc.BindContentControls(xmlMainContract.FileName, fileName, xmlMainContract.XMLNS, xmlMainContract.XMLElementName, linkID, xmlAgreementQuote.xpathContentControlName);
 
+            // Primary Contact
             xmlPrimaryContact.FileName="CM-Contract-"+xmlPrimaryContact.XMLElementName.ToUpper()+"-";
             xmlPrimaryContact.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlPrimaryContact.SerializeDataToXml(cmNewContract.PrimaryContact);
             xmlPrimaryContact.InsertCustomXmlData(xmlPrimaryContact.FileName, xmlPrimaryContact.XMLNS, fileName, out linkID);
 
             cc.BindContentControls(xmlPrimaryContact.FileName, fileName, xmlPrimaryContact.XMLNS, xmlPrimaryContact.XMLElementName, linkID, xmlAgreementQuote.xpathContentControlName);
+            
+            // Tech Support Contact
+            xmlTechnicalSupport.FileName="CM-Contract-"+xmlPrimaryContact.XMLElementName.ToUpper()+"-";
+            xmlTechnicalSupport.FileName+=TechnicalSupport.FirstName+"-"+TechnicalSupport.LastName+".xml";
+            xmlTechnicalSupport.SerializeDataToXml(cmNewContract.TechnicalSupport);
+            xmlTechnicalSupport.InsertCustomXmlData(xmlTechnicalSupport.FileName, xmlTechnicalSupport.XMLNS, fileName, out linkID);
 
+            cc.BindContentControls(xmlTechnicalSupport.FileName, fileName, xmlTechnicalSupport.XMLNS, xmlTechnicalSupport.XMLElementName, linkID, xmlAgreementQuote.xpathContentControlName);
+            
+            // Invoice & Billing Contact
+            xmlInvoiceBilling.FileName="CM-Contract-"+xmlInvoiceBilling.XMLElementName.ToUpper()+"-";
+            xmlInvoiceBilling.FileName+=InvoiceBilling.FirstName+"-"+InvoiceBilling.LastName+".xml";
+            xmlInvoiceBilling.SerializeDataToXml(cmNewContract.InvoiceBilling);
+            xmlInvoiceBilling.InsertCustomXmlData(xmlInvoiceBilling.FileName, xmlInvoiceBilling.XMLNS, fileName, out linkID);
 
-            //  Put in the quote           
+            cc.BindContentControls(xmlInvoiceBilling.FileName, fileName, xmlInvoiceBilling.XMLNS, xmlInvoiceBilling.XMLElementName, linkID, xmlAgreementQuote.xpathContentControlName);
+
+            //  Put in the quote
             OpenXmlElement qAutoText=AgreementQuote.RetrieveAutoText(templateName,SFProductTranslateToRider[quoteAutoTextIndex].AutoTextQuote); // 12.09.2020 Need to think about a better way of doing this because there's one autotext entry for the quote that's the same no matter how many riders there are.
             AgreementQuote.InsertAutoText(fileName,qAutoText);
-
-
 
             // 1.20.2021 Determine whether to create a STANDARD QUOTE or a MULTI-YEAR SPRINGBOARD QUOTE
             if (chosenRider == productType.SpringBoard && Agreement.Term > 1)
