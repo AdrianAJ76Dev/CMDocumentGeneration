@@ -208,8 +208,7 @@ namespace CMDocumentGeneration.Models
                     /*  11.12.2020 
                     *   Get ALL the Content Controls in the document
                     *   ccAll=mdp.Document.Body.Elements<SdtElement>().ToList();
-                    */
-                    
+                    */                    
                     ccAll=mdp.Document.Descendants<SdtElement>().ToList();
 
                     
@@ -218,10 +217,9 @@ namespace CMDocumentGeneration.Models
                     *   ONLY get the Content Controls that MATCH the Prefix:
                     *   agrmt-m, agrmt-pc, agrmt-q 
                     */
-
                     IEnumerable<SdtElement> ccCurrSet = 
                         from cc in ccAll
-                        where cc.Descendants<Tag>().FirstOrDefault().Val.Value.Contains(prefix)
+                        where cc.Descendants<Tag>().FirstOrDefault().Val.Value.Contains(prefix) // Can I just store the prefix in the tag?
                         select cc;
 
                     /*  11.12.2020
@@ -248,8 +246,9 @@ namespace CMDocumentGeneration.Models
                         IEnumerable<SdtElement> ccRepeatingRowValues =
                             from cc in ccAll
                             where cc.Descendants<Tag>().FirstOrDefault<Tag>()
-                                    .Val.Value.Contains(contentControlName+"/ns:")
+                                    .Val.Value.Contains("/rr")
                             select cc;
+                        // Code above uses tag of content control to find repeating rows so DON'T CHANGE THE TAGS in the content controls!!!
 
                         DoBinding(ccRepeatingRowValues, datastoreID, ns, prefix, contentControlName);
                     }                        
@@ -266,7 +265,6 @@ namespace CMDocumentGeneration.Models
 
             private void DoBinding(IEnumerable<SdtElement> specificContentControls, string datastoreID, string ns, string prefix, string contentControlName){
                 SdtAlias ccName;
-                Tag ccTag;
                 SdtProperties ccProps;
                 DataBinding ccDataBinding;
 
@@ -280,7 +278,9 @@ namespace CMDocumentGeneration.Models
                     ccName=ccProps.GetFirstChild<SdtAlias>();
                     if (ccName != null)                                                     // If the name is null, the element isn't a content control
                     {
-                        ccTag=wrdCC.Descendants<Tag>().FirstOrDefault<Tag>();               //  11.5.2020 XPath query for databinding stored here 
+                        //  11.5.2020 XPath query for databinding stored here 
+                        //ccTag=wrdCC.Descendants<Tag>().FirstOrDefault<Tag>();               
+                        // I don't think I'm using this object anywhere.
                                                                                                                 
                         ccDataBinding = new DataBinding();
                         ccDataBinding.PrefixMappings=string.Format("xmlns:ns='{0}'", ns);

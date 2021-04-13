@@ -64,6 +64,7 @@ namespace CMDocumentGeneration.Models
             public string CreateDate{get;set;}
             public string ContractStartDate{get;set;}
             public string ContractEndDate{get;set;}
+            public string TotalPrice{get;set;}
             public int Term{get;set;}
             public string ImplementationYears{get;set;}
             public string ClientSignatory{get;set;}
@@ -100,8 +101,8 @@ namespace CMDocumentGeneration.Models
             public string ProductName{get;set;}
             public string StartDate{get;set;}
             public string EndDate{get;set;}
-            public int Quantity{get;set;}
-            public float TotalCost{get;set;}
+            public string Quantity{get;set;}
+            public string TotalCost{get;set;}
         }
         public class SummaryItem
         {
@@ -379,6 +380,9 @@ namespace CMDocumentGeneration.Models
                 }
             }
 
+            //  Put in the quote
+            OpenXmlElement qAutoText=AgreementQuote.RetrieveAutoText(templateName,SFProductTranslateToRider[quoteAutoTextIndex].AutoTextQuote); // 12.09.2020 Need to think about a better way of doing this because there's one autotext entry for the quote that's the same no matter how many riders there are.
+            AgreementQuote.InsertAutoText(fileName,qAutoText);
             //  Add the custom xml or "Do the Merge"
             
             string linkID;
@@ -420,9 +424,6 @@ namespace CMDocumentGeneration.Models
 
             cc.BindContentControls(xmlInvoiceBilling.FileName, fileName, xmlInvoiceBilling.XMLNS, xmlInvoiceBilling.XMLElementName, linkID, xmlAgreementQuote.xpathContentControlName);
 
-            //  Put in the quote
-            OpenXmlElement qAutoText=AgreementQuote.RetrieveAutoText(templateName,SFProductTranslateToRider[quoteAutoTextIndex].AutoTextQuote); // 12.09.2020 Need to think about a better way of doing this because there's one autotext entry for the quote that's the same no matter how many riders there are.
-            AgreementQuote.InsertAutoText(fileName,qAutoText);
 
             // 1.20.2021 Determine whether to create a STANDARD QUOTE or a MULTI-YEAR SPRINGBOARD QUOTE
             if (chosenRider == productType.SpringBoard && Agreement.Term > 1)
