@@ -305,6 +305,7 @@ namespace CMDocumentGeneration.Models
                 }
             }
 
+            productsInFileName=productsInFileName.Remove(productsInFileName.Length-1,1);
             fileName="CM-Contract-"
                 +PrimaryContact.FirstName+"-"
                 +PrimaryContact.LastName+"-"
