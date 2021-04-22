@@ -35,9 +35,11 @@ namespace CMDocumentGeneration.Models
         public string FileName{
             get{return fileName;}
         }
+
         protected CMDocument(){
             fileName = ".docx";
         }
+        
         protected class customXML{
         /*  09.04.2020
         *   The "Word" component classes

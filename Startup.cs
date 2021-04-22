@@ -11,6 +11,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+// 04.17.2021 - Adding Microsoft Identity Web package
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
+
+using CMDocumentGeneration.Models;
+
 namespace CMDocumentGeneration
 {
     public class Startup

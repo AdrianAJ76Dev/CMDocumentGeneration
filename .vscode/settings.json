@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin\\Release\\netcoreapp3.1\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/ee0b1ccd-4739-43a0-88b1-c40a093d4208/resourceGroups/rg-stcbdev/providers/Microsoft.Web/sites/CBGenerateContracts"
+}
