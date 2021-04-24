@@ -1,22 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
-// 04.17.2021 - Adding Microsoft Identity Web package
-using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
-
-using CMDocumentGeneration.Models;
-
 namespace CMDocumentGeneration
 {
     public class Startup
@@ -41,6 +29,11 @@ namespace CMDocumentGeneration
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.Use(async(context,next)=>{
+                await context.Response.WriteAsync("Contract Created!! HEELLLLOOOOO NURSE!!!!");
+                await next();
+                });
 
             app.UseHttpsRedirection();
 

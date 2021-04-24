@@ -272,6 +272,8 @@ namespace CMDocumentGeneration.Models
 
             /*  09.27.2020
             *   Pick which template to use: Either for K12 Contracts or Higher Ed. Contracts 
+            *   04.24.2021 Think of changing this to TemplateChoice or anything that mentions 
+            *   the template instead of the institution type
             */
             switch (Agreement.InstitutionType)
             {
@@ -394,6 +396,7 @@ namespace CMDocumentGeneration.Models
             */
             xmlAgreementQuote.xpathContentControlName="LineItems";
             
+            // CHANGE - 04.23.2021 - The following code can be put into a single function with the xmlName, linkID, xmlAgreementQuote as parameters - CHANGE!
             xmlMainContract.FileName="CM-Contract-"+xmlMainContract.XMLElementName.ToUpper()+"-";
             xmlMainContract.FileName+=PrimaryContact.FirstName+"-"+PrimaryContact.LastName+".xml";
             xmlMainContract.SerializeDataToXml(cmNewContract.Agreement);
@@ -410,7 +413,7 @@ namespace CMDocumentGeneration.Models
             cc.BindContentControls(xmlPrimaryContact.FileName, fileName, xmlPrimaryContact.XMLNS, xmlPrimaryContact.XMLElementName, linkID, xmlAgreementQuote.xpathContentControlName);
             
             // Tech Support Contact
-            xmlTechnicalSupport.FileName="CM-Contract-"+xmlPrimaryContact.XMLElementName.ToUpper()+"-";
+            xmlTechnicalSupport.FileName="CM-Contract-"+xmlTechnicalSupport.XMLElementName.ToUpper()+"-";
             xmlTechnicalSupport.FileName+=TechnicalSupport.FirstName+"-"+TechnicalSupport.LastName+".xml";
             xmlTechnicalSupport.SerializeDataToXml(cmNewContract.TechnicalSupport);
             xmlTechnicalSupport.InsertCustomXmlData(xmlTechnicalSupport.FileName, xmlTechnicalSupport.XMLNS, fileName, out linkID);
