@@ -30,12 +30,15 @@ namespace CMDocumentGeneration
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Use(async(context,next)=>{
-                await context.Response.WriteAsync("Contract Created!! HEELLLLOOOOO NURSE!!!!");
-                await next();
-                });
-
             app.UseHttpsRedirection();
+
+            app.Use(async (context, next) =>
+            {
+                await context.Response.WriteAsync("Contract Created!!\n");
+                await next();
+            });
+
+            app.UseMiddleware<WebAPIResponseMiddleware>();
 
             app.UseRouting();
 
