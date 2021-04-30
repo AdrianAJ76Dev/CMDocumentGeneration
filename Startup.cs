@@ -17,6 +17,15 @@ namespace CMDocumentGeneration
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        /*
+        *   04.29.2021 - Services should be added to save the newly generated contract, for example, to either:
+        *   1. Azure
+        *   2. Amazon Web Services
+        *   3. Google Cloud Services
+        *   4. SharePoint
+        *   5. Local machine/laptop/PC/Mac
+        *   Possible figure out how to make AzureResources into a Service!
+        */
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -32,17 +41,15 @@ namespace CMDocumentGeneration
 
             app.UseHttpsRedirection();
 
-            app.Use(async (context, next) =>
-            {
-                await context.Response.WriteAsync("Contract Created!!\n");
-                await next();
-            });
-
-            app.UseMiddleware<WebAPIResponseMiddleware>();
-
             app.UseRouting();
 
             app.UseAuthorization();
+
+            /*  04.29.2021 - Read appsettings.json section: SettingsCMContract:WordTemplates:Name
+            *   This MUST come after routing middleware BECAUSE I'm using routing to retrieve the value
+            */
+            //  04.30.2021 - THIS WORKS!! IT RETURNS THE CONTENTS OF THE FILE!!!!
+            app.UseMiddleware<ReturnFile>();
 
             app.UseEndpoints(endpoints =>
             {

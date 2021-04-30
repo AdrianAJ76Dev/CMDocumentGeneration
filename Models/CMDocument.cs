@@ -360,39 +360,5 @@ namespace CMDocumentGeneration.Models
             AzureResources.SaveGeneratedDocument(wordDocument, fileName);           
             wordDocument.Close();
         }
-        
-        
-        
-        // 1.19.2021 STILL haven't used this. May delete!
-        public static void ValidateWordDocument(WordprocessingDocument WrdDoc, string FromWhatRoutine)
-        {
-            try
-            {           
-                OpenXmlValidator validator = new OpenXmlValidator();
-                int count = 0;
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine(FromWhatRoutine);
-                Console.WriteLine();
-                foreach (ValidationErrorInfo error in validator.Validate(WrdDoc))
-                    {
-                        count++;
-                        Console.WriteLine("Error " + count);
-                        Console.WriteLine("Description: " + error.Description);
-                        Console.WriteLine("ErrorType: " + error.ErrorType);
-                        Console.WriteLine("Node: " + error.Node);
-                        Console.WriteLine("Path: " + error.Path.XPath);
-                        Console.WriteLine("Part: " + error.Part.Uri);
-                        Console.WriteLine("-------------------------------------------");
-                    }
-
-                Console.WriteLine("count={0}", count);
-            }
-                
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);              
-            }
-        }
     }
 }     

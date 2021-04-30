@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using CMDocumentGeneration.Models;
 
@@ -21,10 +22,12 @@ namespace CMDocumentGeneration.Controllers
         */
         
         [HttpPost("Agreement")]
-        public void CMContract([FromBody] CMContract cmContract){
+        public FileStreamResult CMContract([FromBody] CMContract cmContract){
             cmContract.Generate(cmContract);
             // Return a Word document
-            //return new FileStreamResult(AzureResources.GetGeneratedDocument(cmContract.FileName),"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            
+            MemoryStream file = AzureResources.GetGeneratedDocument(cmContract.FileName);
+            return new FileStreamResult(file,"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         }
         
         [HttpPost("Agreement\\SpringBoard\\Quote")]
