@@ -15,12 +15,10 @@ namespace CMDocumentGeneration
 
         public async Task Invoke(HttpContext context){
             await next(context);
-            var fileName = @"C:\Users\Adria\Documents\Love.txt";
-            using(Stream fileContent = File.OpenRead(fileName)){
-                fileContent.Seek(0,SeekOrigin.Begin);
-                context.Response.ContentLength=fileContent.Length;
-            };
-            await context.Response.SendFileAsync(fileName);
+            MemoryStream file = AzureResources.GetCustomXmlFile("Love.txt");
+            file.Seek(0,SeekOrigin.Begin);
+            context.Response.ContentLength=file.Length;
+            await file.CopyToAsync(context.Response.Body); 
         }
     }
 }
