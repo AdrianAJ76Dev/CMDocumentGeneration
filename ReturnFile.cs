@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text;
 using CMDocumentGeneration.Models;
 
 namespace CMDocumentGeneration
@@ -11,10 +12,15 @@ namespace CMDocumentGeneration
         public ReturnFile(RequestDelegate nextMiddleWare){
             next = nextMiddleWare;
         }
+
         public async Task Invoke(HttpContext context){
-            string file = @"C:\Users\Adria\Documents\Love.txt";
-            context.Response.ContentType="text/plain";
-            await context.Response.SendFileAsync(file);
+            await next(context);
+            var fileName = @"C:\Users\Adria\Documents\Love.txt";
+            using(Stream fileContent = File.OpenRead(fileName)){
+                fileContent.Seek(0,SeekOrigin.Begin);
+                context.Response.ContentLength=fileContent.Length;
+            };
+            await context.Response.SendFileAsync(fileName);
         }
     }
 }

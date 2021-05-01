@@ -39,17 +39,17 @@ namespace CMDocumentGeneration
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
             /*  04.29.2021 - Read appsettings.json section: SettingsCMContract:WordTemplates:Name
             *   This MUST come after routing middleware BECAUSE I'm using routing to retrieve the value
             */
             //  04.30.2021 - THIS WORKS!! IT RETURNS THE CONTENTS OF THE FILE!!!!
             app.UseMiddleware<ReturnFile>();
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
