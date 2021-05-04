@@ -25,7 +25,7 @@ namespace CMDocumentGeneration
                 file.Seek(0,SeekOrigin.Begin);
 
                 context.Response.ContentLength=file.Length;
-                context.Response.ContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                context.Response.ContentType = "application/octet-stream";
                 await file.CopyToAsync(context.Response.Body);                              
             }
         }
