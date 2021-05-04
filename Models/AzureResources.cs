@@ -39,6 +39,8 @@ namespace CMDocumentGeneration.Models
 
     static public class AzureResources
     {
+        static public string ContractFileName;
+
         static public MemoryStream GetWordTemplate(string templateName){
             BlobClient wordTemplate = WordResourceInAzure(AzureResourcesConfig.ContainerNameWordTemplates,templateName);
             MemoryStream msWordTemplate = new MemoryStream();
@@ -60,7 +62,7 @@ namespace CMDocumentGeneration.Models
            */
             msdoc.Seek(0, SeekOrigin.Begin);
             wrdDocument.Upload(msdoc,true);
-
+            ContractFileName = fileName;
         }
 
         static public MemoryStream GetCustomXmlFile(string fileName){

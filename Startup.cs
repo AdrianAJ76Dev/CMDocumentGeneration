@@ -42,7 +42,9 @@ namespace CMDocumentGeneration
             /*  04.29.2021 - Read appsettings.json section: SettingsCMContract:WordTemplates:Name
             *   This MUST come after routing middleware BECAUSE I'm using routing to retrieve the value
             */
-            //  04.30.2021 - THIS WORKS!! IT RETURNS THE CONTENTS OF THE FILE!!!!
+            /*  04.30.2021 - THIS WORKS!! IT RETURNS THE CONTENTS OF THE FILE!!!!
+            * This middleware from a class modifies the http response.
+            */
             app.UseMiddleware<ReturnFile>();
 
             app.UseHttpsRedirection();
@@ -55,6 +57,7 @@ namespace CMDocumentGeneration
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
