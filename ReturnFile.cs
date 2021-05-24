@@ -20,7 +20,7 @@ namespace CMDocumentGeneration
                 // 05.03.2021 I need to add the name of the contract to the header here.
                 context.Response.Headers.Add("ContractName", AzureResources.ContractFileName);
 
-                // MemoryStream file = AzureResources.GetCustomXmlFile("Love.txt");
+                // 05.04.2021
                 MemoryStream file = AzureResources.GetGeneratedDocument(AzureResources.ContractFileName);
                 file.Seek(0,SeekOrigin.Begin);
 

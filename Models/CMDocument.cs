@@ -1,6 +1,8 @@
 // Standard libraries
 using System;
 using System.IO;
+using System.Text;
+using System.Text.Json;
 using System.Collections.Generic;
 
 // Xml libraries
@@ -40,6 +42,49 @@ namespace CMDocumentGeneration.Models
             fileName = ".docx";
         }
         
+        /* 05.15.2021 - Word templates are now "configured" in a JSON file 
+        * because I want to define specific behavior for each template
+        * and default values for each template. This is part of an effort
+        * to make this web api that creates Word documents more flexible.
+        */
+        
+        
+
+        /*
+        protected string ReadJSONFileForTemplate(string fileName, string templateName){
+            const string TEMPLATE_NAME = "TemplateName";
+            string template;
+            MemoryStream msTemplates = new MemoryStream();
+            
+            msTemplates=AzureResources.GetJSONFile(fileName);
+
+            ReadOnlySpan<byte> jsonReadOnlySpan = msTemplates.ToArray();
+            var reader = new Utf8JsonReader(jsonReadOnlySpan);
+            while (reader.Read()){
+                JsonTokenType tokenType = reader.TokenType;
+                switch (tokenType)
+                {
+                    case JsonTokenType.PropertyName:
+                        if (reader.ValueTextEquals(Encoding.UTF8.GetBytes(TEMPLATE_NAME)))
+                        {
+                            reader.Read();
+                            if (reader.GetString()==templateName)
+                            {
+                                template=;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+
+            return template;
+        }
+        */
+
+
         protected class customXML{
         /*  09.04.2020
         *   The "Word" component classes

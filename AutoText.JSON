@@ -1,64 +1,76 @@
 
 [
     {"contractRiderID":0,
-    "Product":"SpringBoard",
-    "AutoTextRider":"SPB",
-    "AutoTextQuote":"SPBS"
+        "Product":"SpringBoard",
+        "PAbbrv":"SB",
+        "AutoTextRider":"SPB",
+        "AutoTextQuote":"SPBS"
     },
     {"contractRiderID":1,
-    "Product":"Pre-AP Services",
-    "AutoTextRider":"PAP",
-    "AutoTextQuote":"HEDBS"
+        "Product":"Pre-AP Services",
+        "PAbbrv":"Pre_Ap",
+        "AutoTextRider":"PAP",
+        "AutoTextQuote":"HEDBS"
     },
     {"contractRiderID":2,
-    "Product":"Enrollment Planning Service™ - Unlimited Subscription",
-    "AutoTextRider":"EPSU",
-    "AutoTextQuote":"HEDBS"
+        "Product":"Enrollment Planning Service™ - Unlimited Subscription",
+        "PAbbrv":"EPS",
+        "AutoTextRider":"EPSU",
+        "AutoTextQuote":"HEDBS"
     },    
     {"contractRiderID":3,
-    "Product":"Student Search - subscription",
-    "AutoTextRider":"SSS",
-    "AutoTextQuote":"HEDBS"
+        "Product":"Student Search - subscription",
+        "PAbbrv":"SSS",
+        "AutoTextRider":"SSS",
+        "AutoTextQuote":"HEDBS"
     },
     {"contractRiderID":4,
-    "Product":"Segment Analysis Service™ - Unlimited Subscription",
-    "AutoTextRider":"SASU",
-    "AutoTextQuote":"HEDBS"
+        "Product":"Segment Analysis Service™ - Unlimited Subscription",
+        "PAbbrv":"SAS",
+        "AutoTextRider":"SASU",
+        "AutoTextQuote":"HEDBS"
     },
     {"contractRiderID":5,
-    "Product":"PowerFAIDS Initial",
-    "AutoTextRider":"PFI",
-    "AutoTextQuote":"HEDBS"
+        "Product":"PowerFAIDS Initial",
+        "PAbbrv":"PF_Init",
+        "AutoTextRider":"PFI",
+        "AutoTextQuote":"HEDBS"
     },
     {"contractRiderID":6,
-    "Product":"PowerFAIDS Updgrade",
-    "AutoTextRider":"PFU",
-    "AutoTextQuote":"HEDBS"
+        "Product":"PowerFAIDS Upgrade",
+        "PAbbrv":"PF_Upgd",
+        "AutoTextRider":"PFU",
+        "AutoTextQuote":"HEDBS"
     },
     {"contractRiderID":7,
-    "Product":"PowerFAIDS Maintenance",
-    "AutoTextRider":"PFM",
-    "AutoTextQuote":"HEDBS"
+        "Product":"PowerFAIDS Maintenance",
+        "PAbbrv":"PF_Maint",
+        "AutoTextRider":"PFM",
+        "AutoTextQuote":"HEDBS"
     },
     {"contractRiderID":8,
-    "Product":"NetPartner Initial",
-    "AutoTextRider":"NPI",
-    "AutoTextQuote":"HEDBS"
+        "Product":"NetPartner Initial",
+        "PAbbrv":"NP",
+        "AutoTextRider":"NPI",
+        "AutoTextQuote":"HEDBS"
     },
     {"contractRiderID":9,
-    "Product":"NetPartner Support",
-    "AutoTextRider":"NPS",
-    "AutoTextQuote":"HEDBS"
+        "Product":"NetPartner Support",
+        "PAbbrv":"NP_Support",
+        "AutoTextRider":"NPS",
+        "AutoTextQuote":"HEDBS"
     },
     {"contractRiderID":10,
-    "Product":"Profile",
-    "AutoTextRider":"PRF",
-    "AutoTextQuote":"HEDBS"
+        "Product":"Profile",
+        "PAbbrv":"PRF",
+        "AutoTextRider":"PRF",
+        "AutoTextQuote":"HEDBS"
     },
     {"contractRiderID":11,
-    "Product":"Interest In My College",
-    "AutoTextRider":"IMC",
-    "AutoTextQuote":"HEDBS"
+        "Product":"Interest in My College",
+        "PAbbrv":"IMC",
+        "AutoTextRider":"None",
+        "AutoTextQuote":"None"
     },
     {"contractRiderID":99,
         "Product":"None",

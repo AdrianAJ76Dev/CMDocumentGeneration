@@ -4,6 +4,7 @@
 using System;
 using System.Text;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Azure.Storage.Blobs;
@@ -98,6 +99,8 @@ namespace CMDocumentGeneration.Models
             jsonAutoTextName.DownloadTo(msAutoTextNames);
             return msAutoTextNames;
         }
+
+        // 05.15.2021 Reads the JSON file in Azure
 
         static private BlobClient WordResourceInAzure(string containerName, string wrdDocResourceName){
             BlobClient wordResource=null;

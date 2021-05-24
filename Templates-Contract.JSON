@@ -1,0 +1,42 @@
+[
+    {
+        "TemplateName":"HED-Template.dotx",
+        "HasRiders":true,
+        "HasQuote":true
+    },
+    {
+        "TemplateName":"HED-Amendment.dotx",
+        "HasRiders":true,
+        "HasQuote":true
+    },
+    {
+        "TemplateName":"K12-Template.dotx",
+        "HasRiders":true,
+        "HasQuote":true
+    },
+    {
+        "TemplateName":"K12-Amendment.dotx",
+        "HasRiders":false,
+        "HasQuote":true
+    },
+    {
+        "TemplateName":"IMC Subscription Agreement.dotx",
+        "HasRiders":false,
+        "HasQuote":false
+    },
+    {
+        "TemplateName":"IMC Rider.dotx",
+        "HasRiders":false,
+        "HasQuote":false
+    },
+    {
+        "TemplateName":"HED-Amendment-PowerFAIDS.dotx",
+        "HasRiders":false,
+        "HasQuote":true
+    },
+    {
+        "TemplateName":"HED-Amendment-NPC.dotx",
+        "HasRiders":false,
+        "HasQuote":false
+    }
+]

@@ -22,13 +22,9 @@ namespace CMDocumentGeneration.Controllers
         */
         
         [HttpPost("Agreement")]
-        public void CMContract([FromBody] CMContract cmContract){
+        public void CMContract([FromBody] CMContract cmContract, [FromHeader] string ContractTemplate){
+            cmContract.ContractTemplate=ContractTemplate;
             cmContract.Generate(cmContract);
-
-            /* Return a Word document
-            MemoryStream file = AzureResources.GetGeneratedDocument(cmContract.FileName);
-            return new FileStreamResult(file,"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-            */
         }
         
         [HttpPost("Agreement\\SpringBoard\\Quote")]
