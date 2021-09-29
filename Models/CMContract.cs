@@ -54,6 +54,17 @@ namespace CMDocumentGeneration.Models
             NetPartnerSupport=9,
             Profile=10,
             InterestInMyCollege=11,
+            Nexus6HSEnglishTeacher=12,
+            Nexus6HSGymTeacher=13,
+            Nexus6HSMathTeacher=14,
+            Nexus6SDProfessor=15,
+            Nexus6SDTeachingAssistant=16,
+            Nexus6ResidentialAssistant=17,
+            Nexus6TeachingAssistant=18,
+            Nexus8Professor=19,
+            Nexus8TeachingAssistant=20,
+            Nexus9Professor=21,
+            Nexus9TeachingAssistantBeta=22,
             None=99
         };
         
@@ -441,6 +452,83 @@ namespace CMDocumentGeneration.Models
 
                         case productType.Profile:
                             chosenRider=productType.Profile;
+                            break;
+
+                        case productType.Nexus6HSEnglishTeacher:
+                            Rider Nexus6HSEnglishTeacher = new Rider();
+                            AutoText = Nexus6HSEnglishTeacher.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus6HSEnglishTeacher.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
+                            break;
+
+                        case productType.Nexus6HSGymTeacher:
+                            Rider Nexus6HSGymTeacher = new Rider();
+                            AutoText = Nexus6HSGymTeacher.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus6HSGymTeacher.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
+                            break;
+
+                        case productType.Nexus6HSMathTeacher:
+                            Rider Nexus6HSMathTeacher = new Rider();
+                            AutoText = Nexus6HSMathTeacher.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus6HSMathTeacher.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
+                            break;
+
+                        case productType.Nexus6ResidentialAssistant:
+                            Rider Nexus6ResidentialAssistant = new Rider();
+                            AutoText = Nexus6ResidentialAssistant.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus6ResidentialAssistant.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
+                            break;
+
+                        case productType.Nexus6SDProfessor:
+                            Rider Nexus6SDProfessor = new Rider();
+                            AutoText = Nexus6SDProfessor.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus6SDProfessor.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
+                            break;
+
+                        case productType.Nexus6SDTeachingAssistant:
+                            Rider Nexus6SDTeachingAssistant = new Rider();
+                            AutoText = Nexus6SDTeachingAssistant.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus6SDTeachingAssistant.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
+                            break;
+
+                        case productType.Nexus6TeachingAssistant:
+                            Rider Nexus6TeachingAssistant = new Rider();
+                            AutoText = Nexus6TeachingAssistant.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus6TeachingAssistant.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
+                            break;
+
+                        case productType.Nexus8Professor:
+                            Rider Nexus8Professor = new Rider();
+                            AutoText = Nexus8Professor.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus8Professor.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
+                            break;
+
+                        case productType.Nexus8TeachingAssistant:
+                            Rider Nexus8TeachingAssistant = new Rider();
+                            AutoText = Nexus8TeachingAssistant.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus8TeachingAssistant.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
+                            break;
+
+                        case productType.Nexus9Professor:
+                            Rider Nexus9Professor = new Rider();
+                            AutoText = Nexus9Professor.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus9Professor.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
+                            break;
+
+                        case productType.Nexus9TeachingAssistantBeta:
+                            Rider Nexus9TeachingAssistantBeta = new Rider();
+                            AutoText = Nexus9TeachingAssistantBeta.RetrieveAutoText(ContractTemplate,currRider.AutoTextRider);
+                            Nexus9TeachingAssistantBeta.InsertAutoText(fileName,AutoText);
+                            chosenRider=productType.SegmentAnalysisService;
                             break;
 
                         default:

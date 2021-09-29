@@ -1,5 +1,82 @@
 
 [
+    {
+        "contractRiderID":12,
+        "Product":"Nexus 6 (HS) - English Teacher",
+        "PAbbrv":"N6-English-Teacher",
+        "AutoTextRider":"N6HSE",
+        "AutoTextQuote":"HEDBS" 
+    },
+    {
+        "contractRiderID":13,
+        "Product":"Nexus 6 (HS) - Gym Teacher",
+        "PAbbrv":"N6-Gym-Teacher",
+        "AutoTextRider":"N6HSG",
+        "AutoTextQuote":"HEDBS" 
+    },
+    {
+        "contractRiderID":14,
+        "Product":"Nexus 6 (HS) - Math Teacher",
+        "PAbbrv":"N6-Math-Teacher",
+        "AutoTextRider":"N6HSM",
+        "AutoTextQuote":"HEDBS" 
+    },
+    {
+        "contractRiderID":15,
+        "Product":"Nexus 6 - Residential Assistant",
+        "PAbbrv":"N6-Residential-Assistant",
+        "AutoTextRider":"N6HEDRA",
+        "AutoTextQuote":"HEDBS" 
+    },
+    {
+        "contractRiderID":16,
+        "Product":"Nexus 6 (SD) - Professor",
+        "PAbbrv":"N6SD-Professor",
+        "AutoTextRider":"N6HEDP_SD",
+        "AutoTextQuote":"HEDBS" 
+    },
+    {
+        "contractRiderID":17,
+        "Product":"Nexus 6 (SD) - Teaching Assistant",
+        "PAbbrv":"N6-Teaching-Assistant",
+        "AutoTextRider":"N6HEDTA_SD",
+        "AutoTextQuote":"HEDBS" 
+    },
+    {
+        "contractRiderID":18,
+        "Product":"Nexus 6 - Teaching Assistant",
+        "PAbbrv":"N6-Teaching-Assistant",
+        "AutoTextRider":"N6HEDTA",
+        "AutoTextQuote":"HEDBS" 
+    },
+    {
+        "contractRiderID":19,
+        "Product":"Nexus 8 - Professor",
+        "PAbbrv":"N6-Professor",
+        "AutoTextRider":"N8HEDP",
+        "AutoTextQuote":"HEDBS" 
+    },
+    {
+        "contractRiderID":20,
+        "Product":"Nexus 8 - Teaching Assistant",
+        "PAbbrv":"N6-Teaching-Assistant",
+        "AutoTextRider":"N8HEDTA",
+        "AutoTextQuote":"HEDBS" 
+    },
+    {
+        "contractRiderID":21,
+        "Product":"Nexus 9 - Professor",
+        "PAbbrv":"N6-Professor",
+        "AutoTextRider":"N9HEDP",
+        "AutoTextQuote":"HEDBS" 
+    },
+    {
+        "contractRiderID":22,
+        "Product":"Nexus 9 - Teaching Assistant (Beta)",
+        "PAbbrv":"N6-Teaching-Assistant-Beta",
+        "AutoTextRider":"N9HEDTA_B",
+        "AutoTextQuote":"HEDBS" 
+    },
     {"contractRiderID":0,
         "Product":"SpringBoard",
         "PAbbrv":"SB",

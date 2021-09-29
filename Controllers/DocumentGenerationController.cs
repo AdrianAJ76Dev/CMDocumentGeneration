@@ -32,5 +32,4 @@ namespace CMDocumentGeneration.Controllers
             cmQuote.AddProcessedQuote();
         }
     }
-
 }

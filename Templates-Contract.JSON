@@ -1,5 +1,11 @@
 [
     {
+        "TemplateName":"Tyrell-Nexus-Agreement-Template.dotx",
+        "HasRiders":true,
+        "HasQuote":true
+    },
+    
+    {
         "TemplateName":"HED-Template.dotx",
         "HasRiders":true,
         "HasQuote":true
