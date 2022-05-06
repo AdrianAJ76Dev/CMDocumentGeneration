@@ -196,7 +196,7 @@ namespace CMDocumentGeneration.Models
         private class XmlMainContract : customXML{
             public XmlMainContract(){
                 xmlElementName="agrmt-m";
-                xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement";
+                xmlNamespace="http//www.tyrellwallace.org/Agreement";
             }
             public void SerializeDataToXml(MainContract Agreement){
                 attXmlRoot.ElementName=xmlElementName;
@@ -214,7 +214,7 @@ namespace CMDocumentGeneration.Models
         private class XmlAmendment : customXML{
             public XmlAmendment(){
                 xmlElementName="agrmt-ma";
-                xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Amendment";
+                xmlNamespace="http//www.tyrellwallace.org/Amendment";
             }
         }
         private class XmlRider : customXML{
@@ -223,14 +223,14 @@ namespace CMDocumentGeneration.Models
             */
             public XmlRider(){
                 xmlElementName="agrmt-r";
-                xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement/Rider";
+                xmlNamespace="http//www.tyrellwallace.org/Agreement/Rider";
             }
         }
         // 1.19.2021 --- SERIOUSLY consider if this can be added as another class Quote inherits from!
         private class XmlQuote : customXML{
             public XmlQuote(){
                xmlElementName="agrmt-q";
-               xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement/Quote";
+               xmlNamespace="http//www.tyrellwallace.org/Agreement/Quote";
             }
 
             public string xpathContentControlName{get;set;}
@@ -254,21 +254,21 @@ namespace CMDocumentGeneration.Models
         private class XmlPrimaryContact : customXML{
             public XmlPrimaryContact(){
                xmlElementName="agrmt-pc";
-               xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement/Contact/Primary";
+               xmlNamespace="http//www.tyrellwallace.org/Agreement/Contact/Primary";
             }
         }
 
         private class XmlInvoiceBilling : customXML{
             public XmlInvoiceBilling(){
                xmlElementName="agrmt-ibc";
-               xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement/Contact/InvoiceBilling";
+               xmlNamespace="http//www.tyrellwallace.org/Agreement/Contact/InvoiceBilling";
             }
         }
 
         private class XmlTechnicalSupport : customXML{
             public XmlTechnicalSupport(){
                xmlElementName="agrmt-ts";
-               xmlNamespace="http//www.collegeboard.org/sdp/contractsmanagement/Agreement/Contact/TechnicalSupport";
+               xmlNamespace="http//www.tyrellwallace.org/Agreement/Contact/TechnicalSupport";
             }
         }
 
